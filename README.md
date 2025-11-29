@@ -13,5 +13,16 @@ See `/data/raw` for the original CSV, `/data/split` for the normalized CSV files
 git clone https://github.com/devtroops/superstore-cortex-demo.git
 cd superstore-cortex-demo
 
+## Data Source Acknowledgement
+
+The original Superstore dataset used in this project is sourced from the
+public GitHub repository by WuCandice:
+
+https://github.com/WuCandice/Superstore-Sales-Analysis
+
+All credit for the raw dataset goes to the original creator.
+This project only provides a normalized version of the data for educational
+purposes and to demonstrate Snowflake Semantic Models and Cortex Analyst.
+
 # Optionally: run the Python normalizer to re-generate split CSVs:
 python3 scripts/normalize_superstore.py --input data/raw/Superstore.csv --out data/split/
