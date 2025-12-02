@@ -8,6 +8,10 @@ This repository contains a normalized Superstore dataset (split into `products`,
 ## Repo structure
 See `/data/raw` for the original CSV, `/data/split` for the normalized CSV files.
 
+## E-R Diagram
+<img width="2000" height="1125" alt="image" src="https://github.com/user-attachments/assets/c66a3233-587f-441e-bfb6-2efd74f7ac96" />
+
+
 ## Quickstart (clone + demo)
 ```bash
 git clone https://github.com/devtroops/superstore-cortex-demo.git
