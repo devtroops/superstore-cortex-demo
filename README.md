@@ -12,12 +12,12 @@ See `/data/raw` for the original CSV, `/data/split` for the normalized CSV files
 <img width="2000" height="1125" alt="image" src="https://github.com/user-attachments/assets/c66a3233-587f-441e-bfb6-2efd74f7ac96" />
 
 # Business requirements examples
--- Which states and cities are generating the highest revenue?
--- Which product category is both the best-selling and the most profitable?
--- Which product sub-categories and specific products are top performers as well as those that are underperforming?
--- Are there products that are frequently bought together?
--- Which customer segment is bringing in the most profit?
--- What is the most preferred shipping mode among our customers? ACCORDING TO REGION/CITY/STATE OF CUSTOMER
+Which states and cities are generating the highest revenue?
+Which product category is both the best-selling and the most profitable?
+Which product sub-categories and specific products are top performers as well as those that are underperforming?
+Are there products that are frequently bought together?
+Which customer segment is bringing in the most profit?
+What is the most preferred shipping mode among our customers? ACCORDING TO REGION/CITY/STATE OF CUSTOMER
 
 ## Quickstart (clone + demo)
 ```bash
