@@ -1,0 +1,338 @@
+name: SUPERSTORE_SEMANTIC_MODEL
+description: Semantic model for Superstore demo (products × regions × customers × orders × order_items)
+tables:
+  - name: CUSTOMERS
+    description: This table stores information about customers, including their unique identifier, name, and geographical details such as country, city, state, and postal code, which can be used for customer segmentation and location-based analysis.
+    base_table:
+      database: SUPERSTORE
+      schema: SALES
+      table: CUSTOMERS
+    dimensions:
+      - name: CITY
+        description: The city where the customer is located.
+        expr: CITY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Laredo
+          - Naperville
+          - Austin
+      - name: COUNTRY
+        description: The country where the customer is located.
+        expr: COUNTRY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - United States
+      - name: CUSTOMER_ID
+        description: Unique identifier for each customer in the database, typically used as a primary key to distinguish between individual customers.
+        expr: CUSTOMER_ID
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - PO-19195
+          - SW-20275
+          - CD-12790
+      - name: CUSTOMER_NAME
+        description: The name of the customer.
+        expr: CUSTOMER_NAME
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Natalie Fritzler
+          - Phillina Ober
+          - Nora Pelletier
+      - name: POSTAL_CODE
+        description: The postal code of the customer's mailing address.
+        expr: POSTAL_CODE
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - '77095'
+          - '22204'
+          - '19143'
+      - name: SEGMENT
+        description: The type of customer segment, indicating whether the customer is an individual consumer, a home office, or a corporate entity.
+        expr: SEGMENT
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Consumer
+          - Home Office
+          - Corporate
+      - name: STATE
+        description: The state where the customer is located.
+        expr: STATE
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Pennsylvania
+          - Oregon
+          - Alabama
+    primary_key:
+      columns:
+        - CUSTOMER_ID
+  - name: ORDERS
+    description: This table stores information about customer orders, including the order date, shipping date, shipping mode, and the customer and region associated with each order.
+    base_table:
+      database: SUPERSTORE
+      schema: SALES
+      table: ORDERS
+    dimensions:
+      - name: CUSTOMER_ID
+        description: Unique identifier for the customer who placed the order.
+        expr: CUSTOMER_ID
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - PO-19195
+          - SW-20275
+          - CD-12790
+      - name: ORDER_ID
+        description: Unique identifier for each order, in the format of country code-year-order number.
+        expr: ORDER_ID
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - US-2019-127978
+          - CA-2019-100881
+          - CA-2019-148586
+      - name: REGION_ID
+        description: Unique identifier for the geographic region where the order was placed.
+        expr: REGION_ID
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '1'
+          - '2'
+          - '3'
+      - name: SHIP_MODE
+        description: The shipping method used to deliver the order, indicating the level of service and speed of delivery.
+        expr: SHIP_MODE
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - First Class
+          - Standard Class
+          - Second Class
+    time_dimensions:
+      - name: ORDER_DATE
+        description: Date on which the order was placed.
+        expr: ORDER_DATE
+        data_type: DATE
+        sample_values:
+          - '2019-02-12'
+          - '2019-03-04'
+          - '2019-05-06'
+      - name: SHIP_DATE
+        description: Date on which the order was shipped to the customer.
+        expr: SHIP_DATE
+        data_type: DATE
+        sample_values:
+          - '2019-01-07'
+          - '2019-01-08'
+          - '2019-01-12'
+    primary_key:
+      columns:
+        - ORDER_ID
+  - name: ORDER_ITEMS
+    description: This table stores detailed information about each item within an order, including the order and product identifiers, quantity sold, sales amount, discount applied, and profit generated.
+    base_table:
+      database: SUPERSTORE
+      schema: SALES
+      table: ORDER_ITEMS
+    dimensions:
+      - name: ORDER_ID
+        description: Unique identifier for the order that the item belongs to, in the format "Country Code-Year-Order Number".
+        expr: ORDER_ID
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - US-2019-127978
+          - CA-2019-148586
+          - CA-2019-112326
+      - name: ORDER_ITEM_ID
+        description: Unique identifier for each item within an order.
+        expr: ORDER_ITEM_ID
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '98'
+          - '29'
+          - '1'
+      - name: PRODUCT_ID
+        description: Unique identifier for the product ordered.
+        expr: PRODUCT_ID
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - OFF-PA-10000174
+          - OFF-PA-10000587
+          - OFF-PA-10000675
+      - name: QUANTITY
+        description: The quantity of each item ordered.
+        expr: QUANTITY
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '9'
+          - '2'
+          - '3'
+    facts:
+      - name: DISCOUNT
+        description: The discount percentage applied to the order item, representing the amount deducted from the original price.
+        expr: DISCOUNT
+        data_type: NUMBER(6,4)
+        access_modifier: public_access
+        sample_values:
+          - '0.2000'
+          - '0.0000'
+          - '0.8000'
+      - name: PROFIT
+        description: The profit made on each order item, representing the difference between the selling price and the cost of the item.
+        expr: PROFIT
+        data_type: NUMBER(12,2)
+        access_modifier: public_access
+        sample_values:
+          - '30.02'
+          - '3.22'
+          - '5.24'
+      - name: SALES
+        synonyms:
+          - earnings
+          - gross_sales
+          - income
+          - proceeds
+          - revenue
+          - sales_amount
+          - total_sales
+          - turnover
+        description: The total sales amount for each order item.
+        expr: SALES
+        data_type: NUMBER(12,2)
+        access_modifier: public_access
+        sample_values:
+          - '229.94'
+          - '18.34'
+          - '29.70'
+    primary_key:
+      columns:
+        - ORDER_ITEM_ID
+  - name: PRODUCTS
+    synonyms:
+      - commodities
+      - goods
+      - items
+      - merchandise
+      - offerings
+      - product_catalog
+      - product_inventory
+      - products_list
+      - stock
+    description: This table stores information about various products, including a unique identifier, name, and categorization details. It serves as a master list of products, allowing for the tracking and organization of product data across different categories and sub-categories.
+    base_table:
+      database: SUPERSTORE
+      schema: SALES
+      table: PRODUCTS
+    dimensions:
+      - name: CATEGORY
+        description: The category of the product, which can be Office Supplies, Furniture, or Technology, indicating the type of product being sold.
+        expr: CATEGORY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Office Supplies
+          - Furniture
+          - Technology
+      - name: PRODUCT_ID
+        description: Unique identifier for a product in the catalog.
+        expr: PRODUCT_ID
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - OFF-PA-10000174
+          - OFF-PA-10000587
+          - OFF-PA-10000675
+      - name: PRODUCT_NAME
+        description: The name of the product offered by the company.
+        expr: PRODUCT_NAME
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Avery 508
+          - Newell 345
+          - Balt Solid Wood Round Tables
+      - name: SUB_CATEGORY
+        description: The SUB_CATEGORY column represents the sub-grouping of products within a category, providing a more specific classification of the product type, such as Labels, Paper, or Storage.
+        expr: SUB_CATEGORY
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Labels
+          - Paper
+          - Storage
+    primary_key:
+      columns:
+        - PRODUCT_ID
+  - name: REGIONS
+    description: This table stores information about geographic regions, with each region uniquely identified by a system-generated ID and a descriptive name.
+    base_table:
+      database: SUPERSTORE
+      schema: SALES
+      table: REGIONS
+    dimensions:
+      - name: REGION_ID
+        description: Unique identifier for a geographic region.
+        expr: REGION_ID
+        data_type: NUMBER(38,0)
+        sample_values:
+          - '1'
+          - '2'
+          - '3'
+      - name: REGION_NAME
+        description: Geographic region where the business operates.
+        expr: REGION_NAME
+        data_type: VARCHAR(16777216)
+        sample_values:
+          - Central
+          - East
+          - South
+    primary_key:
+      columns:
+        - REGION_ID
+    unique_keys:
+      - columns:
+          - REGION_NAME
+relationships:
+  - name: ORDERS_2_REGIONS
+    left_table: ORDERS
+    right_table: REGIONS
+    relationship_columns:
+      - left_column: REGION_ID
+        right_column: REGION_ID
+  - name: ORDER_2_CUSTOMER
+    left_table: ORDERS
+    right_table: CUSTOMERS
+    relationship_columns:
+      - left_column: CUSTOMER_ID
+        right_column: CUSTOMER_ID
+  - name: ORDER_ITEMS_2_ORDERS
+    left_table: ORDER_ITEMS
+    right_table: ORDERS
+    relationship_columns:
+      - left_column: ORDER_ID
+        right_column: ORDER_ID
+  - name: ORDER_ITEMS_2_PRODUCTS
+    left_table: ORDER_ITEMS
+    right_table: PRODUCTS
+    relationship_columns:
+      - left_column: PRODUCT_ID
+        right_column: PRODUCT_ID
+verified_queries:
+  - name: What is the most preferred shipping mode among our customers?
+    question: What is the most preferred shipping mode among our customers?
+    sql: SELECT O.SHIP_MODE FROM orders AS O GROUP BY SHIP_MODE ORDER BY COUNT(o.ship_mode) DESC LIMIT 1
+    verified_at: 1764438994
+    verified_by: Semantic Model Generator
+  - name: Which states and cities are generating the highest revenue?
+    question: Which states and cities are generating the highest revenue?
+    sql: |-
+      SELECT
+        c.state,
+        c.city,
+        MIN(o.order_date) AS start_date,
+        MAX(o.order_date) AS end_date,
+        SUM(oi.sales) AS total_revenue
+      FROM
+        order_items AS oi
+        LEFT OUTER JOIN orders AS o ON oi.order_id = o.order_id
+        LEFT OUTER JOIN customers AS c ON o.customer_id = c.customer_id
+      GROUP BY
+        c.state,
+        c.city
+      ORDER BY
+        total_revenue DESC NULLS LAST
+    use_as_onboarding_question: true
+    verified_by: rohit kumar
+    verified_at: 1764483602
